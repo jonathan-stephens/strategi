@@ -1,0 +1,267 @@
+.site-header {
+    position: relative;
+    inline-size: 100%;
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--header-padding-block);
+    gap: var(--space-s);
+}
+
+/* Site Branding */
+.site-branding a {
+    display: inline-block;
+    line-height: 0;
+}
+
+.site-logo {
+    max-block-size: var(--size-logo-height);
+    inline-size: auto;
+    block-size: auto;
+}
+
+/* Main Navigation - Desktop */
+.main-nav {
+    display: none;
+}
+
+.nav-list {
+    display: flex;
+    gap: var(--space-s);
+    align-items: center;
+    list-style: none;
+}
+
+.nav-list > li {
+    position: relative;
+}
+
+.nav-list a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding-block: var(--space-2xs);
+    padding-inline: var(--space-s);
+    text-decoration: none;
+}
+
+/* Progressive enhancement: :focus-visible */
+.nav-list a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* CTA Button - Exception handled via composition */
+.nav-cta > a {
+    border: 2px solid currentColor;
+    border-radius: 0.25rem;
+}
+
+/* Dropdown indicator */
+.dropdown-icon::after {
+    content: '▼';
+    font-size: 0.7em;
+    margin-inline-start: var(--space-3xs);
+}
+
+/* Mega Menu */
+.mega-menu {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    min-inline-size: 12.5rem;
+    background: light-dark(white, #1a1a1a); /* Modern CSS: light-dark() */
+    border: 1px solid light-dark(#ddd, #333);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: opacity var(--transition-base) var(--transition-timing),
+                transform var(--transition-base) var(--transition-timing),
+                visibility var(--transition-base);
+    z-index: 1000;
+}
+
+/* Progressive enhancement: :has() for parent state */
+.has-dropdown:hover .mega-menu,
+.has-dropdown:focus-within .mega-menu,
+.has-dropdown:has(a[aria-expanded="true"]) .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mega-menu__list {
+    list-style: none;
+}
+
+.mega-menu__list > li {
+    border-block-end: 1px solid light-dark(#eee, #2a2a2a);
+}
+
+.mega-menu__list > li:last-child {
+    border-block-end: none;
+}
+
+.mega-menu__list a {
+    display: block;
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-s);
+    white-space: nowrap;
+}
+
+/* Menu Toggle (Hamburger) */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--size-hamburger-line) * 2);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2xs);
+    transition: transform var(--transition-base) var(--transition-timing);
+}
+
+.menu-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.menu-toggle__line {
+    inline-size: var(--size-hamburger);
+    block-size: var(--size-hamburger-line);
+    background: currentColor;
+    transition: transform var(--transition-base) var(--transition-timing),
+                opacity var(--transition-base) var(--transition-timing);
+    transform-origin: center;
+}
+
+/* Hamburger animation - Progressive enhancement with individual transforms */
+.menu-toggle[aria-expanded="true"] .menu-toggle__line:nth-child(1) {
+    transform: translateY(calc(var(--size-hamburger-line) * 3)) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle__line:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle__line:nth-child(3) {
+    transform: translateY(calc(var(--size-hamburger-line) * -3)) rotate(-45deg);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inline-size: 100%;
+    block-size: 100dvh; /* Modern CSS: dynamic viewport units */
+    background: light-dark(white, #0a0a0a);
+    z-index: 9999;
+    overflow-y: auto;
+    overscroll-behavior: contain; /* Modern CSS: prevent scroll chaining */
+
+    /* Progressive enhancement: view transitions API ready */
+    translate: 100% 0;
+    transition: translate var(--transition-base) var(--transition-timing);
+}
+
+@supports (animation-timeline: scroll()) {
+    /* Future: scroll-driven animations support */
+    .mobile-menu {
+        /* Will be enhanced when widely supported */
+    }
+}
+
+.mobile-menu[aria-hidden="false"] {
+    translate: 0 0;
+}
+
+.mobile-nav {
+    padding-block-start: var(--space-2xl);
+    padding-block-end: var(--space-l);
+    padding-inline: var(--space-l);
+}
+
+.mobile-nav__list {
+    list-style: none;
+}
+
+.mobile-nav__list > li {
+    border-block-end: 1px solid light-dark(#eee, #2a2a2a);
+}
+
+.mobile-nav__list a {
+    display: block;
+    padding-block: var(--space-s);
+    text-decoration: none;
+}
+
+/* CTA in mobile menu */
+.mobile-nav__list .nav-cta {
+    margin-block-start: var(--space-s);
+    border-block-end: none;
+}
+
+.mobile-nav__list .nav-cta a {
+    border: 2px solid currentColor;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+
+/* Nested menu items */
+.mobile-nav__list .mega-menu__list {
+    padding-inline-start: var(--space-s);
+}
+
+/* Container Queries - Progressive Enhancement */
+@container (min-width: 48rem) {
+    /* When widely supported, can add container-based responsive design */
+}
+
+/* Desktop Layout - Media Query */
+@media (min-width: 48rem) {
+    .main-nav {
+        display: block;
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: none;
+    }
+}
+
+/* Mobile: Keep contact visible, hide other nav items */
+@media (max-width: 47.9375rem) {
+    .main-nav .nav-list > li:not(.nav-cta) {
+        display: none;
+    }
+
+    .main-nav {
+        display: block;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .nav-list a:focus-visible,
+    .menu-toggle:focus-visible {
+        outline-width: 3px;
+    }
+}

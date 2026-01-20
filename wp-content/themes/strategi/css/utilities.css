@@ -1,0 +1,10 @@
+.wrapper {
+    max-width: var(--wrapper-max-width);
+    margin-inline: auto;
+    padding-inline: var(--header-padding-inline);
+}
+
+/* Modern CSS: :has() for conditional utilities */
+.flow > * + * {
+    margin-block-start: var(--flow-space, 1em);
+}
